@@ -1,0 +1,62 @@
+// android/settings.gradle for example project
+
+import java.util.Properties
+
+// -----------------------------
+// Flutter plugin management
+// -----------------------------
+pluginManagement {
+    def flutterSdkPath = {
+        def properties = new Properties()
+        file("local.properties").withInputStream { properties.load(it) }
+        def flutterSdkPath = properties.getProperty("flutter.sdk")
+        assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
+        return flutterSdkPath
+    }
+    settings.ext.flutterSdkPath = flutterSdkPath()
+
+    includeBuild("${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle")
+
+    plugins {
+        id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+    }
+}
+
+// -----------------------------
+// Include the example app
+// -----------------------------
+include ":app"
+
+// -----------------------------
+// Include plugin and native modules
+// -----------------------------
+include ":softposafs_plugin"
+include ":softpos", ":softpospin", ":afspinapp"
+
+// Map directories explicitly
+project(":softposafs_plugin").projectDir = new File(settingsDir.parentFile, "..")
+project(":softpos").projectDir           = new File(settingsDir.parentFile, "../softpos")
+project(":softpospin").projectDir        = new File(settingsDir.parentFile, "../softpospin")
+project(":afspinapp").projectDir         = new File(settingsDir.parentFile, "../afspinapp")
+
+// -----------------------------
+// Flutter plugin loader
+// -----------------------------
+apply from: "${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle/app_plugin_loader.gradle"
+
+// -----------------------------
+// Dynamically include all Flutter plugins from .flutter-plugins
+// -----------------------------
+def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+
+def plugins = new Properties()
+def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
+if (pluginsFile.exists()) {
+    pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
+}
+
+plugins.each { name, path ->
+    def pluginDirectory = flutterProjectRoot.resolve(path).resolve('android').toFile()
+    include ":$name"
+    project(":$name").projectDir = pluginDirectory
+}

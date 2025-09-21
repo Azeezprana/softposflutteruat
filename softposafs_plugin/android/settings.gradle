@@ -1,0 +1,7 @@
+// // android/settings.gradle
+
+// include ':afspinapp', ':softpos', ':softpospin'
+
+// // project(':afspinapp').projectDir = file('../afspinapp')
+// // project(':softpos').projectDir   = file('../softpos')
+// // project(':softpospin').projectDir = file('../softpospin')
