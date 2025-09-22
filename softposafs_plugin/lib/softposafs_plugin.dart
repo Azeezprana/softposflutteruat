@@ -6,24 +6,27 @@ class SoftposafsPlugin {
     return SoftposafsPluginPlatform.instance.getPlatformVersion();
   }
 
-  Future<String?> initializeSDK() {
-    return SoftposafsPluginPlatform.instance.initializeSDK();
+  Future<String?> initializeSDK(String strUrl) {
+    return SoftposafsPluginPlatform.instance.initializeSDK(strUrl);
   }
 
   Future<String?> checkPOSService() {
     return SoftposafsPluginPlatform.instance.checkPOSService();
   }
 
-  Future<String?> registerDevice() {
-    return SoftposafsPluginPlatform.instance.registerDevice();
+  Future<String?> registerDevice(
+      String strmerchantId, String strterminalId, String stractivationCode) {
+    return SoftposafsPluginPlatform.instance
+        .registerDevice(strmerchantId, strterminalId, stractivationCode);
   }
 
   Future<String?> unregisterDevice() {
     return SoftposafsPluginPlatform.instance.unregisterDevice();
   }
 
-  Future<String?> startTransaction() {
-    return SoftposafsPluginPlatform.instance.startTransaction();
+  Future<String?> startTransaction(int transactionId, int amount) {
+    return SoftposafsPluginPlatform.instance
+        .startTransaction(transactionId, amount);
   }
 
   /// Expose native event stream

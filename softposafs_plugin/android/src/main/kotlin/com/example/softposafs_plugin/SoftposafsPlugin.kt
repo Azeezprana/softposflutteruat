@@ -61,15 +61,30 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
             }
             "initializeSDK" -> {
-                initializeSoftPos()
-                result.success("SDK Initialization started")
+                 val url = call.argument<String>("url") // ✅ get URL from Flutter
+                  if (url.isNullOrEmpty()) {
+                  result.error("INVALID_URL", "URL cannot be null or empty", null)
+                  return
+                  }
+                 initializeSoftPos(url) // pass it here
+                 result.success("SDK initialization started with URL: $url")
+                //initializeSoftPos()
+                //result.success("SDK Initialization started")
             }
             "checkPOSService" -> {
                 checkPOSService()
                 result.success("POS Service check started")
             }
             "registerDevice" -> {
-                registerDevice()
+                 val merchantId = call.argument<String>("merchantId")
+                    val terminalId = call.argument<String>("terminalId")
+                    val activationCode = call.argument<String>("activationCode")
+
+                    if (merchantId.isNullOrEmpty() || terminalId.isNullOrEmpty() || activationCode.isNullOrEmpty()) {
+                        result.error("INVALID_PARAMS", "One or more parameters are null or empty", null)
+                        return
+                    }
+                registerDevice(merchantId, terminalId, activationCode)
                 result.success("Device registration started")
             }
             "unregisterDevice" -> {
@@ -77,7 +92,9 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success("Device unregistration started")
             }
             "startTransaction" -> {
-                startTransaction()
+                val transactionId = call.argument<Long>("transactionId") ?: 0L 
+                val amount = call.argument<Int>("amount") ?: 0 
+                startTransaction(transactionId,amount)
                 result.success("Please tap your card")
             }
             else -> result.notImplemented()
@@ -113,8 +130,8 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     // ————— SDK Initialization —————
 
-    private fun initializeSoftPos() {
-        Log.d("SoftposPlugin", "Starting SDK initialization...")
+    private fun initializeSoftPos(softPosUrl: String) {
+         Log.d("SoftposPlugin", "Starting SDK initialization with URL: $softPosUrl")
 
         try {
             val assetManager = context.assets
@@ -129,7 +146,8 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
 
         // ✅ Trim URL to avoid hidden whitespace issues
-        SoftPosInfo.setUrl("https://soharpay.uat.afs.com.bh/core".trim())
+        // SoftPosInfo.setUrl("https://soharpay.uat.afs.com.bh/core".trim())
+         SoftPosInfo.setUrl(softPosUrl.trim())
         SoftPosInfo.setAcquirerId(300001)
         SoftPosInfo.setPinAppPackageName("context.aar")
         SoftPosInfo.setPinAppVersion(com.softpos.pin.BuildConfig.VERSION_NAME)
@@ -205,10 +223,10 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         })
     }
 
-    private fun registerDevice() {
-        val merchantId = "220000000209890"
-        val terminalId = "22949347"
-        val activationCode = "1"
+    private fun registerDevice(merchantId: String, terminalId: String, activationCode: String) {
+        //val merchantId = "220000000209890"
+        //val terminalId = "22949347"
+       // val activationCode = "1"
 
         Log.d("SoftPosRegister", "📲 Registering device with merchantId: $merchantId...")
         sendEventToFlutter("📲 Registering device with merchant ID: $merchantId...")
@@ -245,7 +263,7 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         })
     }
 
-    private fun startTransaction() {
+    private fun startTransaction(transactionId: Long, amount: Int) {
         val customMessage = "SampleMessage"
         val currentActivity = activity ?: run {
             val errorMsg = "❌ Cannot start transaction: No active screen. Please restart the app."
@@ -258,9 +276,9 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         Log.d("Transaction", "Starting transaction...")
 
         softPosService.startTransaction(
-            1300L,
+            transactionId,
             TransactionType.SALE,
-            10000,
+            amount,
             customMessage,
             currentActivity,
             object : TransactionListener {

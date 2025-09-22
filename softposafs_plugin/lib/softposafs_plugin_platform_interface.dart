@@ -27,7 +27,7 @@ abstract class SoftposafsPluginPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<String?> initializeSDK() {
+  Future<String?> initializeSDK(String strUrl) {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
@@ -35,7 +35,8 @@ abstract class SoftposafsPluginPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<String?> registerDevice() {
+  Future<String?> registerDevice(
+      String strmerchantId, String strterminalId, String stractivationCode) {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
@@ -43,7 +44,7 @@ abstract class SoftposafsPluginPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<String?> startTransaction() {
+  Future<String?> startTransaction(int transactionId, int amount) {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 }

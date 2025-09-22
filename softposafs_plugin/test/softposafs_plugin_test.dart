@@ -17,19 +17,20 @@ class MockSoftposafsPluginPlatform
   }
 
   @override
-  Future<String?> initializeSDK() {
+  Future<String?> initializeSDK(String strUrl) {
     // TODO: implement initializeSDK
     throw UnimplementedError();
   }
 
   @override
-  Future<String?> registerDevice() {
+  Future<String?> registerDevice(
+      String strmerchantId, String strterminalId, String stractivationCode) {
     // TODO: implement registerDevice
     throw UnimplementedError();
   }
 
   @override
-  Future<String?> startTransaction() {
+  Future<String?> startTransaction(int transactionId, int amount) {
     // TODO: implement startTransaction
     throw UnimplementedError();
   }

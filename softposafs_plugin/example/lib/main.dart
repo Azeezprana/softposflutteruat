@@ -86,7 +86,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _initSDK() async {
     try {
-      final result = await _softposafsPlugin.initializeSDK();
+      String softPosURL = "https://soharpay.uat.afs.com.bh/core";
+      final result = await _softposafsPlugin.initializeSDK(softPosURL);
       if (mounted) {
         setState(() {
           _status = result ?? "SDK initialization response is null";
@@ -120,7 +121,11 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _registerDevice() async {
     try {
-      final result = await _softposafsPlugin.registerDevice();
+      String merchantId = "220000000209890";
+      String terminalId = "22949347";
+      String activationCode = "1";
+      final result = await _softposafsPlugin.registerDevice(
+          merchantId, terminalId, activationCode);
       if (mounted) {
         setState(() {
           _status = result ?? "Device registration response is null";
@@ -154,7 +159,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _startTransaction() async {
     try {
-      final result = await _softposafsPlugin.startTransaction();
+      int transactionId = DateTime.now().millisecondsSinceEpoch;
+      final result =
+          await _softposafsPlugin.startTransaction(transactionId, 10000);
       if (mounted) {
         setState(() {
           _status = result ?? "Transaction start response is null";
@@ -171,7 +178,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> startPayment() async {
     try {
-      final result = await _softposafsPlugin.initializeSDK();
+      String softPosURL = "https://soharpay.uat.afs.com.bh/core";
+      final result = await _softposafsPlugin.initializeSDK(softPosURL);
       if (mounted) {
         setState(() {
           _status = result ?? "Device registration response is null";

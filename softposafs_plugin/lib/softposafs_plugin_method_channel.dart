@@ -20,9 +20,14 @@ class MethodChannelSoftposafsPlugin extends SoftposafsPluginPlatform {
     return version;
   }
 
-  Future<String?> initializeSDK() async {
+  Future<String?> initializeSDK(String strURL) async {
     try {
-      return await methodChannel.invokeMethod<String>('initializeSDK');
+      // return await methodChannel.invokeMethod<String>('initializeSDK');
+      // Pass strURL to native side
+      return await methodChannel.invokeMethod<String>(
+        'initializeSDK',
+        {'url': strURL}, // ✅ send as argument map
+      );
     } on PlatformException catch (e) {
       return "SDK initialization failed: ${e.message}";
     }
@@ -36,9 +41,28 @@ class MethodChannelSoftposafsPlugin extends SoftposafsPluginPlatform {
     }
   }
 
-  Future<String?> registerDevice() async {
+  // Future<String?> registerDevice(String strmerchantId, String strterminalId,
+  //     String stractivationCode) async {
+  //   try {
+  //     return await methodChannel.invokeMethod<String>('registerDevice');
+  //   } on PlatformException catch (e) {
+  //     return "Device registration failed: ${e.message}";
+  //   }
+  // }
+  Future<String?> registerDevice(
+    String strMerchantId,
+    String strTerminalId,
+    String strActivationCode,
+  ) async {
     try {
-      return await methodChannel.invokeMethod<String>('registerDevice');
+      return await methodChannel.invokeMethod<String>(
+        'registerDevice',
+        {
+          'merchantId': strMerchantId,
+          'terminalId': strTerminalId,
+          'activationCode': strActivationCode,
+        },
+      );
     } on PlatformException catch (e) {
       return "Device registration failed: ${e.message}";
     }
@@ -52,9 +76,15 @@ class MethodChannelSoftposafsPlugin extends SoftposafsPluginPlatform {
     }
   }
 
-  Future<String?> startTransaction() async {
+  Future<String?> startTransaction(int transactionId, int amount) async {
     try {
-      return await methodChannel.invokeMethod<String>('startTransaction');
+      return await methodChannel.invokeMethod<String>(
+        'startTransaction',
+        {
+          'transactionId': transactionId,
+          'amount': amount,
+        },
+      );
     } on PlatformException catch (e) {
       return "Transaction start failed: ${e.message}";
     }
