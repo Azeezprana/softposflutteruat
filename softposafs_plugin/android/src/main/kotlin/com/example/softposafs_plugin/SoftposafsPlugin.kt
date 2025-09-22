@@ -276,7 +276,7 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         Log.d("Transaction", "Starting transaction...")
 
         softPosService.startTransaction(
-            transactionId,
+            1300L,
             TransactionType.SALE,
             amount,
             customMessage,
@@ -308,13 +308,31 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
 
                 override fun onCompleted(transactionResult: TransactionResult) {
-                   // val refusalCode = transactionResult.refusalCode ?: "N/A"
-                  //  val approved = transactionResult.approved // ← if available
-                  //  val status = if (approved) "✅ Approved" else "❌ Declined"
-                  //  val msg = "$status | Refusal Code: $refusalCode"
-                  //  Log.d("Transaction", "Completed: $msg") 
-                    Log.d("Transaction", "Transaction Completed: $transactionResult")
-                    sendEventToFlutter("TransactionResult :  ${transactionResult}") 
+                    Log.d("Transaction", "Transaction Completed: $transactionResult") 
+                    val info = buildString {
+                        appendLine("✅ Transaction Completed:")
+                        appendLine("Transaction ID: ${transactionResult.getTransactionId()}")
+                        appendLine("EMV Accepted: ${transactionResult.isEMVAccepted()}")
+                        appendLine("Refusal Code: ${transactionResult.getRefusalCode()}")
+                        appendLine("Masked PAN: ${transactionResult.getMaskedPan()}")
+                        appendLine("Card Type: ${transactionResult.getCardType()}")
+                        appendLine("Issuer Identification Number: ${transactionResult.getIssuerIdentificationNumber()}")
+                        appendLine("Application Label: ${transactionResult.getApplicationLabel()}")
+                        appendLine("Application Preferred Name: ${transactionResult.getApplicationPreferredName()}")
+                        appendLine("Outcome Msg ID: ${transactionResult.getOutcomeMsgId()}")
+                        appendLine("L2 Error Indication: ${transactionResult.getL2ErrorIndication()}")
+                        appendLine("SCAS Needed: ${transactionResult.isSCANeeded()}")
+                        appendLine("Transaction Error: ${transactionResult.getTransactionError()?.getErrorMessage() ?: "None"}")
+                        
+                        val customMessages = transactionResult.getCustomMessage()
+                        if (customMessages != null && customMessages.isNotEmpty()) {
+                            appendLine("Custom Messages:")
+                            customMessages.forEach { (key, value) ->
+                                appendLine(" - $key: $value")
+                            }
+                        }
+                    }  
+                    sendEventToFlutter("TransactionResult :  ${info}") 
                    
                 }
 
