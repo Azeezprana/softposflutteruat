@@ -23,6 +23,7 @@ import com.cardtek.softpos.kernel.BeepType
 import com.cardtek.softpos.constants.CardType
 import com.cardtek.softpos.results.TransactionResult
 import java.io.InputStream
+import org.json.JSONObject
 
 class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
@@ -307,33 +308,24 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     // Optional: sendEventToFlutter("🔊 Beep: $beepType")
                 }
 
-                override fun onCompleted(transactionResult: TransactionResult) {
-                    Log.d("Transaction", "Transaction Completed: $transactionResult") 
-                    val info = buildString {
-                        appendLine("✅ Transaction Completed:")
-                        appendLine("Transaction ID: ${transactionResult.getTransactionId()}")
-                        appendLine("EMV Accepted: ${transactionResult.isEMVAccepted()}")
-                        appendLine("Refusal Code: ${transactionResult.getRefusalCode()}")
-                        appendLine("Masked PAN: ${transactionResult.getMaskedPan()}")
-                        appendLine("Card Type: ${transactionResult.getCardType()}")
-                        appendLine("Issuer Identification Number: ${transactionResult.getIssuerIdentificationNumber()}")
-                        appendLine("Application Label: ${transactionResult.getApplicationLabel()}")
-                        appendLine("Application Preferred Name: ${transactionResult.getApplicationPreferredName()}")
-                        appendLine("Outcome Msg ID: ${transactionResult.getOutcomeMsgId()}")
-                        appendLine("L2 Error Indication: ${transactionResult.getL2ErrorIndication()}")
-                        appendLine("SCAS Needed: ${transactionResult.isSCANeeded()}")
-                        appendLine("Transaction Error: ${transactionResult.getTransactionError()?.getErrorMessage() ?: "None"}")
-                        
-                        val customMessages = transactionResult.getCustomMessage()
-                        if (customMessages != null && customMessages.isNotEmpty()) {
-                            appendLine("Custom Messages:")
-                            customMessages.forEach { (key, value) ->
-                                appendLine(" - $key: $value")
-                            }
-                        }
-                    }  
-                    sendEventToFlutter("TransactionResult :  ${info}") 
-                   
+                override fun onCompleted(transactionResult: TransactionResult) { 
+                    Log.d("Transaction", "Transaction Completed: $transactionResult")
+                    sendEventToFlutter("Transaction Completed") 
+                     val json = JSONObject().apply {
+                    put("transactionId", transactionResult.getTransactionId())
+                    put("emvAccepted", transactionResult.isEMVAccepted())
+                    put("refusalCode", transactionResult.getRefusalCode())
+                    put("maskedPan", transactionResult.getMaskedPan())
+                    put("cardType", transactionResult.getCardType()?.toString())
+                    put("issuerIdentificationNumber", transactionResult.getIssuerIdentificationNumber())
+                    put("applicationLabel", transactionResult.getApplicationLabel())
+                    put("applicationPreferredName", transactionResult.getApplicationPreferredName())
+                    put("outcomeMsgId", transactionResult.getOutcomeMsgId())
+                    put("l2ErrorIndication", transactionResult.getL2ErrorIndication())
+                    put("scaNeeded", transactionResult.isSCANeeded())
+                    put("transactionError", transactionResult.getTransactionError()?.getErrorMessage() ?: "None")
+                } 
+                    sendEventToFlutter(json.toString()) 
                 }
 
                 override fun onTimeout() {
