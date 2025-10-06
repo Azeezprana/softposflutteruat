@@ -279,8 +279,7 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         softPosService.startTransaction(
             1300L,
             TransactionType.SALE,
-            amount,
-            60000,
+            60000, 
             customMessage,
             currentActivity,
             object : TransactionListener {
