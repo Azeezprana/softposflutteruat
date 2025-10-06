@@ -94,7 +94,7 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "startTransaction" -> {
                 val transactionId = call.argument<Long>("transactionId") ?: 0L 
-                val amount = call.argument<Long>("amount") ?: 0L ;//call.argument<Int>("amount") ?: 0 
+                val amount = (call.argument<Number>("amount")?.toLong()) ?: 0L
                 startTransaction(transactionId,amount)
                 result.success("Please tap your card")
             }
