@@ -37,21 +37,20 @@ class _MyAppState extends State<MyApp> {
             if (_status.isNotEmpty && _status.contains("Permissions needed")) {
               print('Permission required');
               return;
+            } else if (_status.isNotEmpty &&
+                _status.contains("POS is ready.")) {
+              _checkService().then((value) => null);
+            } else if (_status.isNotEmpty &&
+                _status.contains("Device registration required")) {
+              _registerDevice().then((value) => null);
+              _checkService().then((value) => null);
+            } else if (_status.isNotEmpty &&
+                _status.contains("Already register")) {
+              _checkService().then((value) => null);
+            } else if (_status.isNotEmpty &&
+                _status.contains("POS service check passed")) {
+              _startTransaction().then((value) => null);
             }
-            // else if (_status.isNotEmpty &&
-            //     _status.contains("POS is ready.")) {
-            //   _checkService().then((value) => null);
-            // } else if (_status.isNotEmpty &&
-            //     _status.contains("Device registration required")) {
-            //   _registerDevice().then((value) => null);
-            //   _checkService().then((value) => null);
-            // } else if (_status.isNotEmpty &&
-            //     _status.contains("Already register")) {
-            //   _checkService().then((value) => null);
-            // } else if (_status.isNotEmpty &&
-            //     _status.contains("POS service check passed")) {
-            //   _startTransaction().then((value) => null);
-            // }
           });
         }
         print('📱 Native Event: $event');
