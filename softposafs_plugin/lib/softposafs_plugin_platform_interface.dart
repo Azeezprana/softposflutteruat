@@ -44,7 +44,7 @@ abstract class SoftposafsPluginPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<String?> startTransaction(int transactionId, int amount) {
+  Future<String?> startTransaction(int transactionId, double amount) {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 }

@@ -24,7 +24,7 @@ class SoftposafsPlugin {
     return SoftposafsPluginPlatform.instance.unregisterDevice();
   }
 
-  Future<String?> startTransaction(int transactionId, int amount) {
+  Future<String?> startTransaction(int transactionId, double amount) {
     return SoftposafsPluginPlatform.instance
         .startTransaction(transactionId, amount);
   }

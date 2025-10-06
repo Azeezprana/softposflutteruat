@@ -76,7 +76,7 @@ class MethodChannelSoftposafsPlugin extends SoftposafsPluginPlatform {
     }
   }
 
-  Future<String?> startTransaction(int transactionId, int amount) async {
+  Future<String?> startTransaction(int transactionId, double amount) async {
     try {
       return await methodChannel.invokeMethod<String>(
         'startTransaction',

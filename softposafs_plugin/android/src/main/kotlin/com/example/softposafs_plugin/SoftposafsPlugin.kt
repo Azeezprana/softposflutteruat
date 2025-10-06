@@ -94,7 +94,7 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "startTransaction" -> {
                 val transactionId = call.argument<Long>("transactionId") ?: 0L 
-                val amount = call.argument<Int>("amount") ?: 0 
+                val amount = call.argument<Long>("amount") ?: 0L ;//call.argument<Int>("amount") ?: 0 
                 startTransaction(transactionId,amount)
                 result.success("Please tap your card")
             }
@@ -264,7 +264,7 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         })
     }
 
-    private fun startTransaction(transactionId: Long, amount: Int) {
+    private fun startTransaction(transactionId: Long, amount: Long) {
         val customMessage = "SampleMessage"
         val currentActivity = activity ?: run {
             val errorMsg = "❌ Cannot start transaction: No active screen. Please restart the app."
@@ -275,9 +275,9 @@ class SoftposafsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
         sendEventToFlutter("💳 Please tap or insert your card to start payment...")
         Log.d("Transaction", "Starting transaction...")
-
+        //1300L,
         softPosService.startTransaction(
-            1300L,
+            amount,
             TransactionType.SALE,
             60000, 
             customMessage,

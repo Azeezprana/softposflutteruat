@@ -30,7 +30,7 @@ class MockSoftposafsPluginPlatform
   }
 
   @override
-  Future<String?> startTransaction(int transactionId, int amount) {
+  Future<String?> startTransaction(int transactionId, double amount) {
     // TODO: implement startTransaction
     throw UnimplementedError();
   }
