@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:softposafs_plugin/softposafs_plugin.dart';
-import 'package:softposafs_plugin/softposafs_plugin_platform_interface.dart';
-import 'package:softposafs_plugin/softposafs_plugin_method_channel.dart';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:softposafsuat_plugin/softposafs_plugin.dart';
+import 'package:softposafsuat_plugin/softposafs_plugin_method_channel.dart';
+import 'package:softposafsuat_plugin/softposafs_plugin_platform_interface.dart';
 
 class MockSoftposafsPluginPlatform
     with MockPlatformInterfaceMixin

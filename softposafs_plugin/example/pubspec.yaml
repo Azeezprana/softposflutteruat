@@ -19,7 +19,7 @@ dependencies:
 
   softposafs_plugin:
     git:
-      url: https://github.com/azeez-githu/softposflutter.git
+      url: https://github.com/azeez-githu/softposflutteruat.git
       path: softposafs_plugin
       ref: main  # or a specific branch/tag
 
