@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:softposafsuat_plugin/softposafs_plugin_method_channel.dart';
+import 'package:softposafs_plugin/softposafs_plugin_method_channel.dart';
+// import 'package:softposafsuat_plugin/softposafs_plugin_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

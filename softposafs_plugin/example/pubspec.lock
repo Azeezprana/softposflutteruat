@@ -175,12 +175,10 @@ packages:
   softposafs_plugin:
     dependency: "direct main"
     description:
-      path: softposafs_plugin
-      ref: main
-      resolved-ref: "22adba07e676d907f3e2e7bb000d89f16ab001b4"
-      url: "https://github.com/azeez-githu/softposflutter.git"
-    source: git
-    version: "0.0.1"
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.0"
   source_span:
     dependency: transitive
     description:
